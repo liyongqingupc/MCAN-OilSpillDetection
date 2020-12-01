@@ -1,6 +1,6 @@
 # MCAN
 
-### Official pytorch implementation of the paper: "Oil Spill Detection with A Multiscale Conditional Adversarial Network under Small Data Training"
+### Official pytorch implementation of the paper: "Oil Spill Detection with A Multiscale Conditional Adversarial Network under Small Data Training". The codes will be kept updating and improving. 
 
 
 ## Oil spill detection with small data
