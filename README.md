@@ -4,7 +4,7 @@
 
 
 ## Oil spill detection with small data
-With MCAN, for example:
+MCAN is an effective tool to train a model with small data.
 
 ![](imgs/teaser.PNG)
 
