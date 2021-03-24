@@ -137,17 +137,16 @@ def calc_gradient_penalty(netD, input_data, real_data, fake_data, LAMBDA, device
     return gradient_penalty
 
 def read_image(opt):
-    x = img.imread('%s/%s' % (opt.input_dir,opt.input_name))
+    x = img.imread('%s/%s' % (opt.input_dir, opt.input_name))
     x = np2torch(x,opt)
     x = x[:,0:3,:,:]
-    print (x.shape)
-    a=x.shape
-    b=int(a[3])
+    #print (x.shape)
+    a = x.shape
+    b = int(a[3])
     x1 = x[:,0:3,:,0:int(b/2)]  # left half
     x1 = (x1 - x1.min()) / (x1.max() - x1.min())  # lyq add normalize()
     x2 = x[:,0:3,:,int(b/2):b]  # right half
-    #x2 = (x2 - x2.min()) / (x2.max() - x2.min())  # lyq add normalize()
-    return x1,x2    #lyq modify
+    return x1, x2    #lyq modify
 
 def read_image_dir(dir,opt):
     x = img.imread('%s' % (dir))
@@ -184,23 +183,15 @@ def read_image2np(opt):
     x = x[:, :, 0:3]
     return x
 
-def save_networks(netG,netD,z,opt):
+def save_networks(netG,netD,opt): #lyq delete z
     torch.save(netG.state_dict(), '%s/netG.pth' % (opt.outf))
     torch.save(netD.state_dict(), '%s/netD.pth' % (opt.outf))
-    torch.save(z, '%s/z_opt.pth' % (opt.outf))
+    #torch.save(z, '%s/z_opt.pth' % (opt.outf))
 
 def adjust_scales2image(real_,opt):
-    opt.num_scales = math.ceil((math.log(math.pow(opt.min_size / (min(real_.shape[2], real_.shape[3])), 1),
-                                         opt.scale_factor_init)))/4 + 1  #lyq add
-    scale2stop = math.ceil(
-        math.log(min([opt.max_size, max([real_.shape[2], real_.shape[3]])]) / max([real_.shape[2], real_.shape[3]]),
-                 opt.scale_factor_init))/4    #lyq add
-    opt.stop_scale = opt.num_scales - scale2stop
-    opt.scale1 = min(opt.max_size / max([real_.shape[2], real_.shape[3]]),1)  # min(250/max([real_.shape[0],real_.shape[1]]),1)
-    real = imresize(real_, opt.scale1, opt)
-    opt.scale_factor = math.pow(opt.min_size/(min(real.shape[2],real.shape[3])),1/(opt.stop_scale))
-    scale2stop = math.ceil(math.log(min([opt.max_size, max([real_.shape[2], real_.shape[3]])]) / max([real_.shape[2], real_.shape[3]]),opt.scale_factor_init))
-    opt.stop_scale = int(opt.num_scales - scale2stop)   #lyq add 0724
+    #print(real_.shape)
+    real = imresize(real_, opt.scale_num, opt)
+
     return real
 
 def adjust_scales2image_SR(real_,opt):
@@ -218,9 +209,8 @@ def adjust_scales2image_SR(real_,opt):
 
 def creat_reals_pyramid(real,reals,opt):
     real = real[:,0:3,:,:]
-    for i in range(0,opt.stop_scale+1,1):
-        scale = math.pow(opt.scale_factor,opt.stop_scale-i)
-        curr_real = imresize(real,scale,opt)
+    for i in range(0, opt.scale_num + 1, 1): #stop_scale->scale_num 0315
+        curr_real = imresize(real, opt.scale_num - i, opt)  # lyq scale->scale_num->i
         reals.append(curr_real)
     return reals
 
