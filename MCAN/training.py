@@ -106,7 +106,7 @@ def train_single_scale(netD,netG,real1s,real2s,Gs,in_s,opt,train_index,train_i, 
             errD_real.backward(retain_graph=True)  # retain_graph=True
             D_x = -errD_real.item()
 
-            if (Gs == []): # lyq add 0315  Ok or Not ????
+            if (Gs == []): # lyq add 0315 
                 prev = torch.full([1,opt.nc_z,opt.nzx,opt.nzy], 0, device=opt.device)  # full:generete 0 matrix
             else:
                 #print('real1_prev:',real1_prev.shape, 'in_s:',in_s.shape)
@@ -114,7 +114,7 @@ def train_single_scale(netD,netG,real1s,real2s,Gs,in_s,opt,train_index,train_i, 
             print('real1:',real1.shape, 'prev:',prev.shape)  #Dsteps=3 has error
             fake = netG(torch.cat((real1, prev),1).detach(), prev) # lyq add 0315
 
-            output = netD(torch.cat((real1, fake),1).detach())   # lyq add torch.cat 0911 # .detach() is Ok ????
+            output = netD(torch.cat((real1, fake),1).detach())   # lyq add torch.cat 0911 # 
             errD_fake = output.mean()
             errD_fake.backward(retain_graph=True)
             D_G_z = output.mean().item()
