@@ -32,7 +32,5 @@ To test MCAN model on your own test images, put the test images under Input/Test
 python test.py --trained_model model
 ```
 
+[//]: # (We acknowledge the authors for the code released at ''https://github.com/tamarott/SinGAN'', which provides useful operations for our implementation.)
 
-<div style='display: none'>
-We acknowledge the authors for the code released at ''https://github.com/tamarott/SinGAN'', which provides useful operations for our implementation.
-</div>
