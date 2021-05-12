@@ -63,11 +63,11 @@ for test_num in range(5, 31, 1):  # the index of test images
         ############################### SET opt.scale_num #######################################
         if n == opt.scale_num:  # reach the finest scale
 
-            for threshold in range(70, 74, 2):   #
+            for threshold in range(70, 72, 2):   #
                 ################## output normalize()--> 1 ###################
                 I_curr = (I_curr - I_curr.min()) / (I_curr.max() - I_curr.min())
 
-                I_cu = functions.convert_image_np(I_curr.detach())   # function ?????????
+                I_cu = functions.convert_image_np(I_curr.detach())  
 
                 I_cu = (I_cu[:, :, 0] + I_cu[:, :, 1] + I_cu[:, :, 2]) / 3  # 3D --> 2D lyq210118
 
